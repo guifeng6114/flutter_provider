@@ -1,5 +1,7 @@
 
 
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_provider/models/article_model.dart';
 
@@ -16,16 +18,25 @@ class HttpService {
   factory HttpService() => _singleton;
 
   Future<bool> login(String user) async {
-    // final result = await _dio.get('$_address/login?user=$user');
-    return await true;
+    final response = await _dio.get('$_address/login?user=$user');
+    final data = jsonDecode(response.data);
+    if (data['status'] == 'SUCCESS') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Future<List<ArticleModel>> getArticles() async {
-    final List<ArticleModel> articles = [
-      ArticleModel(1, '小石潭记', '柳宗元', true),
-      ArticleModel(2, '岳阳楼记', '范仲淹', false),
-      ArticleModel(3, '醉翁亭记', '欧阳修', false),
-    ];
-    return await articles;
+    final response = await _dio.get('$_address/articles');
+    final data = jsonDecode(response.data);
+    if (data['status'] == 'SUCCESS') {
+      return data['articles']
+        .map<ArticleModel>((data) => ArticleModel.fromJson(data))
+        .toList();
+    } else {
+      return [].map<ArticleModel>((data) => ArticleModel.fromJson(data))
+        .toList();
+    }
   }
 }
