@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/all.dart';
 
 import 'containers/articles_list_pod.dart';
 import 'containers/articles_star.dart';
+import 'containers/articles_star_pod.dart';
 import 'containers/login.dart';
 import 'data_models/articles_model.dart';
 
@@ -50,7 +51,7 @@ class MyAppPod extends StatelessWidget {
         home: LoginPage(),
         routes: {
           '/articles-pod': (context) => ArticlesListPodPage(),
-          '/stared-pod': (context) => ArticleStarredPage()
+          '/stared-pod': (context) => ArticleStarredPodPage()
         });
   }
 }

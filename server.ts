@@ -1,7 +1,7 @@
 import { listenAndServe, ServerRequest } from 'https://deno.land/std/http/mod.ts';
 
 const body = "Hello World\n";
-const options = { hostname: '10.237.188.40', port: 3400 };
+const options = { hostname: '192.168.0.106', port: 3400 };
 listenAndServe(options, (req: ServerRequest) => {
   routes(req);
 });
