@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_provider/components/article_item.dart';
-import 'package:flutter_provider/data_models/articles_model.dart';
+import 'package:flutter_provider/data_models/articles_model_pod.dart';
 import 'package:flutter_provider/models/article_model.dart';
 import 'package:hooks_riverpod/all.dart';
 
-/* final articlesProvider =
-    ChangeNotifierProvider<ArticlesModel>((_) => ArticlesModel()); */
+final articlesProvider =
+    ChangeNotifierProvider<ArticlesModelPod>((_) => ArticlesModelPod());
 
-class Articles extends StateNotifier<List<ArticleModel>> {
+/* class Articles extends StateNotifier<List<ArticleModel>> {
   Articles(List<ArticleModel> articles) : super(articles);
 
   void toggleStar(ArticleModel article) {
@@ -37,7 +37,7 @@ final ArticleModel article1 =
       articleName: '醉翁亭记', author: '欧阳修', id: 3, isSelected: false);
 final articlesProvider = StateNotifierProvider((ref) {
   return Articles([article1, article2, article3]);
-});
+}); */
 
 class ArticlesListPodPage extends HookWidget {
   Widget build(BuildContext context) {
@@ -62,8 +62,8 @@ class ArticlesListPodPage extends HookWidget {
   }
 
   Widget _buildBody(BuildContext context) {
-    Articles articlesModel = useProvider(articlesProvider);
-    List<ArticleModel> articles = articlesModel.state;
+    ArticlesModelPod articlesModel = useProvider(articlesProvider);
+    List<ArticleModel> articles = articlesModel.articles;
     // articlesModel.init();
     // List<ArticleModel> articles = articlesModel.articles;
     return Container(
