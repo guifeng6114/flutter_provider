@@ -56,7 +56,7 @@ class LoginPage extends StatelessWidget {
           if (result) {
             if (user == 'pod') {
               Navigator.of(context).pushReplacementNamed('/articles-pod');
-              context.read(articlesProvider).init();
+              // context.read(articlesProvider).init();
             } else {
               Navigator.of(context).pushReplacementNamed('/articles');
             }
