@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_provider/containers/articles_list.dart';
-import 'package:hooks_riverpod/all.dart';
+// import 'package:hooks_riverpod/all.dart';
 import 'package:provider/provider.dart';
 
 import 'containers/articles_list_pod.dart';
@@ -9,14 +9,14 @@ import 'containers/login.dart';
 import 'data_models/articles_model.dart';
 
 void main() {
-  /* runApp(ChangeNotifierProvider(
+  runApp(ChangeNotifierProvider(
     create: (context) => ArticlesModel(),
     child: MyApp(),
-  )); */
-
-  runApp(ProviderScope(
-    child: MyAppPod(),
   ));
+
+  /* runApp(ProviderScope(
+    child: MyAppPod(),
+  )); */
 }
 
 class MyApp extends StatelessWidget {

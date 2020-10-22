@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_provider/data_models/articles_model.dart';
 import 'package:flutter_provider/services/http_service.dart';
+import 'package:hooks_riverpod/all.dart';
+
+final articlesProvider =
+    ChangeNotifierProvider<ArticlesModel>((_) => ArticlesModel());
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _loginTextController = TextEditingController();
@@ -49,9 +54,12 @@ class LoginPage extends StatelessWidget {
           final user = _loginTextController.text;
           final result = await http.login(user);
           if (result) {
-            user == 'pod'
-                ? Navigator.of(context).pushReplacementNamed('/articles-pod')
-                : Navigator.of(context).pushReplacementNamed('/articles');
+            if (user == 'pod') {
+              Navigator.of(context).pushReplacementNamed('/articles-pod');
+              context.read(articlesProvider).init();
+            } else {
+              Navigator.of(context).pushReplacementNamed('/articles');
+            }
           }
         },
         color: Colors.blue,

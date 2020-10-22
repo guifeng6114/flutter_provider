@@ -19,7 +19,12 @@ class ArticlesListPodPage extends HookWidget {
               onPressed: () {
                 Navigator.of(context).pushNamed('/stared');
               },
-            )
+            ),
+            IconButton(
+                icon: Icon(Icons.refresh),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/stared');
+                })
           ],
         ),
         body: _buildBody(context));
@@ -27,6 +32,7 @@ class ArticlesListPodPage extends HookWidget {
 
   Widget _buildBody(BuildContext context) {
     ArticlesModel articlesModel = useProvider(articlesProvider);
+    // articlesModel.init();
     List<ArticleModel> articles = articlesModel.articles;
     return Container(
       child: ListView.separated(
