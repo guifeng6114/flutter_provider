@@ -1,14 +1,16 @@
 import { listenAndServe, ServerRequest } from 'https://deno.land/std/http/mod.ts';
 
 const body = "Hello World\n";
-const options = { hostname: 'localhost', port: 3400 };
+const options = { hostname: '10.237.188.40', port: 3400 };
 listenAndServe(options, (req: ServerRequest) => {
   routes(req);
 });
+console.log(`Server running at ${ options.hostname }:${ options.port }`);
 
 function routes(req: ServerRequest) {
   const { url } = req;
-  const urlObject = new URL(url, `${ options.hostname }:${ options.port }`);
+  console.log(url);
+  const urlObject = new URL(url, `http://${ options.hostname }:${ options.port }`);
   switch(urlObject.pathname) {
     case '/login':
       const user = urlObject.searchParams.get('user');
