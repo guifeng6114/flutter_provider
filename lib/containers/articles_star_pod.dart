@@ -6,9 +6,6 @@ import 'package:flutter_provider/data_models/articles_model_pod.dart';
 import 'package:flutter_provider/models/article_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final articlesProvider =
-    ChangeNotifierProvider<ArticlesModelPod>((_) => ArticlesModelPod());
-
 class ArticleStarredPodPage extends HookWidget {
   @override
   Widget build(BuildContext context) {

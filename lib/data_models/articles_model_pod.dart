@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_provider/models/article_model.dart';
 import 'package:flutter_provider/services/http_service.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ArticlesModelPod extends ChangeNotifier {
   final HttpService http = HttpService();
@@ -8,12 +9,6 @@ class ArticlesModelPod extends ChangeNotifier {
   List<ArticleModel> articles = [];
 
   List<ArticleModel> staredArticles = [];
-
-  ArticlesModelPod._internal();
-
-  static ArticlesModelPod _singleton = new ArticlesModelPod._internal();
-
-  factory ArticlesModelPod() => _singleton;
 
   void init() async {
     articles = await http.getArticles();
@@ -42,3 +37,6 @@ class ArticlesModelPod extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+final articlesProvider =
+    ChangeNotifierProvider<ArticlesModelPod>((_) => ArticlesModelPod());
