@@ -4,6 +4,7 @@
   - useState hook
   - useEffect hook
 - Riverpod
+  - Create Provider
   - Read Provider
   - Combine Provider
 
@@ -92,3 +93,54 @@ Widget _buildBody(BuildContext context) {
 ```
 
 ## 2. Riverpod
+Riverpod 是 Provider 的作者重写的状态管理库，来实现原本不可能的一些功能。
+可以把 Riverpod 理解为 Provide r的升级版，解决了Provider的一些痛点：
+- Provider 是 InheritedWidget 的封装，所以在读取状态时需要 BuildContext。这导致了许多的限制，许多新手在不理解 InheritedWidget 和 BuildContext 时，跨页面获取状态经常会 ProviderNotFoundException。而 Riverpod 不再依赖 Flutter，也就是没有使用 InheritedWidget，所以也不需要 BuildContext。
+- 读取对象是编译安全的。没有那么多的运行时异常。
+- 能够有多个相同类型的 provider。
+- provider 可以是私有的。
+- 当不再使用 provider 的状态时，将其自动回收。
+
+### 1\. Create Provider
+```dart
+Provider((ref) {
+  return state;
+})
+```
+ref 可以理解成 Provider 的上下文（类似 BuildContext），使用它监听其他Provider 的状态，如：
+```dart
+final filterProvider = StateProvider((ref) => Filter.none);
+final filteredTodoListProvider = Provider<List<Todo>>((ref) {
+  final todos = ref.watch(todoListProvider.state);
+
+  switch (ref.watch(filterProvider)) {
+    case Filter.none:
+      return todos;
+    case Filter.completed:
+      return todos.where((todo) => todo.completed).toList();
+    case Filter.uncompleted:
+      return todos.where((todo) => !todo.completed).toList();
+  }
+});
+```
+变式：  
+```dart
+final myProvider = FutureProvider.autoDispose((ref) async {
+  
+  final cancelToken = CancelToken();
+  // 当provider被销毁时，取消http请求
+  ref.onDispose(() => cancelToken.cancel());
+
+  // http请求
+  final response = await dio.get('path', cancelToken: cancelToken);
+  // 如果请求成功完成，则保持该状态。
+  ref.maintainState = true;
+  return response;
+});
+final myFamilyProvider = Provider.family<String, int>((ref, id) => '$id');
+// use
+useProvider(myFamilyProvider(12));
+```
+
+### 2\. Read Provider
+### 3\. Combine Provider
