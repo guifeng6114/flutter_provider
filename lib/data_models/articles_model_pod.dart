@@ -9,22 +9,17 @@ class ArticlesModelPod extends ChangeNotifier {
 
   List<ArticleModel> staredArticles = [];
 
-  ArticlesModel() {
-    init().then((Map<String, List<ArticleModel>> result) {
-      print(result);
-      articles = result['articles'];
-      staredArticles = result['staredArticles'];
-    });
-  }
+  ArticlesModelPod._internal();
 
-  Future<Map<String, List<ArticleModel>>> init() async {
-    final getArticles = await http.getArticles();
-    final getStaredArticles =
+  static ArticlesModelPod _singleton = new ArticlesModelPod._internal();
+
+  factory ArticlesModelPod() => _singleton;
+
+  void init() async {
+    articles = await http.getArticles();
+    staredArticles =
         articles.where((ArticleModel elem) => elem.isSelected).toList();
-    return {
-      'articles': getArticles,
-      'staredArticles': getStaredArticles
-    };
+    notifyListeners();
   }
 
   void toggleStar(ArticleModel article) {

@@ -10,35 +10,6 @@ import 'package:hooks_riverpod/all.dart';
 final articlesProvider =
     ChangeNotifierProvider<ArticlesModelPod>((_) => ArticlesModelPod());
 
-/* class Articles extends StateNotifier<List<ArticleModel>> {
-  Articles(List<ArticleModel> articles) : super(articles);
-
-  void toggleStar(ArticleModel article) {
-    final curIndex = state.lastIndexWhere((ArticleModel art) => art == article);
-    final curArticle = state[curIndex];
-    if (!curArticle.isSelected) {
-      curArticle.isSelected = true;
-    } else {
-      curArticle.isSelected = false;
-    }
-    state = [
-      ...state.getRange(0, curIndex),
-      curArticle,
-      ...state.getRange(curIndex + 1, state.length)
-    ];
-  }
-}
-
-final ArticleModel article1 =
-      ArticleModel(articleName: '小石潭记', author: '柳宗元', id: 1, isSelected: true);
-  final ArticleModel article2 = ArticleModel(
-      articleName: '岳阳楼记', author: '范仲淹', id: 2, isSelected: false);
-  final ArticleModel article3 = ArticleModel(
-      articleName: '醉翁亭记', author: '欧阳修', id: 3, isSelected: false);
-final articlesProvider = StateNotifierProvider((ref) {
-  return Articles([article1, article2, article3]);
-}); */
-
 class ArticlesListPodPage extends HookWidget {
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +19,7 @@ class ArticlesListPodPage extends HookWidget {
             IconButton(
                 icon: Icon(Icons.refresh),
                 onPressed: () {
-                  // Provider.of<ArticlesModel>(context, listen: false).reset();
+                  context.read(articlesProvider).reset();
                 }),
             IconButton(
               icon: Icon(Icons.collections_bookmark),
@@ -63,9 +34,11 @@ class ArticlesListPodPage extends HookWidget {
 
   Widget _buildBody(BuildContext context) {
     ArticlesModelPod articlesModel = useProvider(articlesProvider);
+    useEffect(() {
+      articlesModel.init();
+      return articlesModel.dispose;
+    }, const []);
     List<ArticleModel> articles = articlesModel.articles;
-    // articlesModel.init();
-    // List<ArticleModel> articles = articlesModel.articles;
     return Container(
       child: ListView.separated(
           itemCount: articles.length,
